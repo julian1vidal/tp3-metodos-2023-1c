@@ -1,17 +1,18 @@
-# Para hacer uso de la libreria Eigen:
+Para hacer uso de la libreria Eigen:
 git clone https://gitlab.com/libeigen/eigen.git
-# o
+o
 !apt-get install libeigen3-dev
 
-# Se compila con "sh compile"
+Se compila con "sh compile"
+Para correr: "./main {txt_input} {txt_salida}
+Ejemplo: "./main ../tests/test.txt ../tests/test_out.txt"
 
-# Para correr: "./main {txt_input} {txt_salida}
-# Ejemplo: "./main ../tests/test.txt ../tests/test_out.txt"
-
-# El txt que recibe por parametro tiene el sig formato:
-# EJEMPLO matriz 3x3, vector en R3
+El txt que recibe por parametro tiene el sig formato:
+EJEMPLO matriz 3x3, vector en R3
 #rows #cols
 a11 a12 a13
 a21 a22 a23
 a31 a32 a33
 b1 b2 b3
+
+
