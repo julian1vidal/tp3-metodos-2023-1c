@@ -21,7 +21,8 @@ gs_mat:
 clean_entrys:
 	rm ./salida.txt
 	rm ./entrada.txt
-	rm
+	rm ./errors.txt
+	rm ./tiempos.txt
 
 clean:
 	rm ./jacobi_mat
