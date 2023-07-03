@@ -1,10 +1,11 @@
 #include "metodos_iterativos.h"
 #include <iostream>
 #include <fstream>
+#include <chrono>
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using namespace std;
-
+#define tolerance 0.00000000000000000000001
 
 // =============================================================
 //                     Funciones auxiliares
@@ -40,15 +41,12 @@ double sumatoria_gs_x_anterior(MatrixXd A, VectorXd x_anterior, int i, int cols)
 struct entrada{
     Eigen::MatrixXd A;
     Eigen::VectorXd b;
+    Eigen::VectorXd real_x;
     int iter;
 };
 
 entrada matrix_reader(int argc, char** argv){
     entrada res;
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " iteraciones" << endl;
-        return res;
-    }
 
     const char* input_file = "entrada.txt";
     const char* output_file = "salida.txt";
@@ -75,10 +73,16 @@ entrada matrix_reader(int argc, char** argv){
         fin >> b(i);
     }
 
+    VectorXd real_x(ncols);
+    for (int i = 0; i < ncols; i++) {
+        fin >> real_x(i);
+    }
+
     fin.close();
     
     res.A = A;
     res.b = b;
+    res.real_x = real_x;
     return res;    
 }
 
@@ -89,9 +93,43 @@ int out_to_python(VectorXd x){
         std::cerr << "Error: could not open output file " << endl;
         return 1;
     }
-
+    // write with more precision
+    fout.precision(16);
     fout << x.transpose() << endl;
 
     fout.close();
     return 0;
+}
+
+void write_errors_to_file(VectorXd errors){
+    ofstream fout("errores.txt");
+    if (!fout.is_open()) {
+        std::cerr << "Error: could not open output file " << endl;
+        return;
+    }
+
+    fout << errors.transpose();
+
+    fout.close();
+}
+
+void write_times_to_file(auto time){
+    ofstream fout("tiempos.txt");
+    if (!fout.is_open()) {
+        std::cerr << "Error: could not open output file " << endl;
+        return;
+    }
+
+    fout << time;
+
+    fout.close();
+}
+
+bool not_a_number(VectorXd x){
+    for (int i = 0; i < x.size(); i++){
+        if (isnan(x[i]) || isinf(x[i])){
+            return true;
+        }
+    }
+    return false;
 }
