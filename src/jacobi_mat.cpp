@@ -3,8 +3,8 @@
 VectorXd jacobi_mat(const MatrixXd& A, const VectorXd& b, int iter, const VectorXd& real_x, double tol, bool write_errors){
     auto start_time = chrono::high_resolution_clock::now();
     int cols = b.size();
-    // VectorXd x = VectorXd::Random(cols);
-    VectorXd x = VectorXd::Zero(cols);
+    VectorXd x = VectorXd::Random(cols);
+    //VectorXd x = VectorXd::Zero(cols);
     int iters_convergencia = iter;
 
     // A = D-L-U

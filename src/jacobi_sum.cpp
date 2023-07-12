@@ -4,8 +4,8 @@ VectorXd jacobi_sum(const MatrixXd& A, const VectorXd& b, int iter, const Vector
     auto start_time = chrono::high_resolution_clock::now();
     int cols = b.size();
     
-    // VectorXd x_anterior = VectorXd::Random(cols);
-    VectorXd x_anterior = VectorXd::Zero(cols);
+    VectorXd x_anterior = VectorXd::Random(cols);
+    //VectorXd x_anterior = VectorXd::Zero(cols);
     int iters_convergencia = iter;
 
     VectorXd x = x_anterior;
