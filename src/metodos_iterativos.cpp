@@ -5,13 +5,13 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using namespace std;
-#define tolerance 0.00000000000000000000001
+#define tolerance 1e-10
 
 // =============================================================
 //                     Funciones auxiliares
 // =============================================================
 
-double sumatoria_jacobi(MatrixXd A, VectorXd x_anterior, int i, int cols){
+double sumatoria_jacobi(const MatrixXd& A, const VectorXd& x_anterior, int i, int cols){
     double suma = 0;
     for (int j = 0; j < cols; j++){
         if (j != i){
@@ -22,7 +22,7 @@ double sumatoria_jacobi(MatrixXd A, VectorXd x_anterior, int i, int cols){
 }
 
 
-double sumatoria_gs_x(MatrixXd A, VectorXd x, int i){
+double sumatoria_gs_x(const MatrixXd& A, const VectorXd& x, int i){
     double suma = 0;
     for (int j = 0; j < i; j++){
         suma += (A(i, j) * x[j]);
@@ -30,7 +30,7 @@ double sumatoria_gs_x(MatrixXd A, VectorXd x, int i){
     return suma;
 }
 
-double sumatoria_gs_x_anterior(MatrixXd A, VectorXd x_anterior, int i, int cols){
+double sumatoria_gs_x_anterior(const MatrixXd& A, const VectorXd& x_anterior, int i, int cols){
     double suma = 0;
     for (int j = i+1; j < cols; j++){
         suma += (A(i, j) * x_anterior[j]);
@@ -86,7 +86,7 @@ entrada matrix_reader(int argc, char** argv){
     return res;    
 }
 
-int out_to_python(VectorXd x){
+int out_to_python(const VectorXd& x){
     // Write result to output file
     ofstream fout("salida.txt");
     if (!fout.is_open()) {
@@ -101,7 +101,7 @@ int out_to_python(VectorXd x){
     return 0;
 }
 
-void write_errors_to_file(VectorXd errors){
+void write_errors_to_file(const VectorXd& errors){
     ofstream fout("errores.txt");
     if (!fout.is_open()) {
         std::cerr << "Error: could not open output file " << endl;
@@ -113,7 +113,7 @@ void write_errors_to_file(VectorXd errors){
     fout.close();
 }
 
-void write_times_to_file(auto time){
+void write_times_to_file(double time){
     ofstream fout("tiempos.txt");
     if (!fout.is_open()) {
         std::cerr << "Error: could not open output file " << endl;
@@ -125,7 +125,20 @@ void write_times_to_file(auto time){
     fout.close();
 }
 
-bool not_a_number(VectorXd x){
+void write_iters_to_file(int iters){
+    ofstream fout("iters.txt");
+    if (!fout.is_open()) {
+        std::cerr << "Error: could not open output file " << endl;
+        return;
+    }
+
+    fout << iters;
+
+    fout.close();
+}
+
+
+bool not_a_number(const VectorXd& x){
     for (int i = 0; i < x.size(); i++){
         if (isnan(x[i]) || isinf(x[i])){
             return true;

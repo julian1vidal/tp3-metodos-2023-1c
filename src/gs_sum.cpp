@@ -2,10 +2,14 @@
 
 
 // =============================================================
-VectorXd gs_sum(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, bool write_errors){
+VectorXd gs_sum(const MatrixXd& A, const VectorXd& b, int iter, const VectorXd& real_x, double tol, bool write_errors){
     auto start_time = chrono::high_resolution_clock::now();
     int cols = b.size();
-    VectorXd x_anterior = VectorXd::Random(cols);
+
+    // VectorXd x_anterior = VectorXd::Random(cols);
+    VectorXd x_anterior = VectorXd::Zero(cols);
+    int iters_convergencia = iter;
+
     VectorXd x = x_anterior;
     VectorXd errors;
     for (int k = 0; k < iter; k++){
@@ -20,6 +24,7 @@ VectorXd gs_sum(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, b
             errors(errors.size()-1) = err;
         }
         if (tol != 0 && err < tol || not_a_number(x)){
+            iters_convergencia = k;
             break;
         }
         cout << "iteración " << k << endl;
@@ -28,6 +33,7 @@ VectorXd gs_sum(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, b
     auto end_time = chrono::high_resolution_clock::now();
     auto time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
     write_times_to_file(time);
+    write_iters_to_file(iters_convergencia);
     if (write_errors){
         write_errors_to_file(errors);
     }

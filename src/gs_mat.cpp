@@ -1,9 +1,11 @@
 #include "metodos_iterativos.cpp"
 
-VectorXd gs_mat(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, bool write_errors){
+VectorXd gs_mat(const MatrixXd& A, const VectorXd& b, int iter, const VectorXd& real_x, double tol, bool write_errors){
     auto start_time = chrono::high_resolution_clock::now();
     int cols = b.size();
-    VectorXd x = VectorXd::Random(cols);
+    // VectorXd x = VectorXd::Random(cols);
+    VectorXd x = VectorXd::Zero(cols);
+    int iters_convergencia = iter;
 
     // A = D-L-U
     MatrixXd D = A.diagonal().asDiagonal();
@@ -26,13 +28,15 @@ VectorXd gs_mat(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, b
             errors(errors.size()-1) = err;
         }
         if (tol != 0 && err < tol || not_a_number(x)){
-            break;
+            iters_convergencia = i;
+            break; 
         }
         cout << "iteración " << i << endl;
     }
     auto end_time = chrono::high_resolution_clock::now();
     auto time = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
     write_times_to_file(time);
+    write_iters_to_file(iters_convergencia);
     if (write_errors){
         write_errors_to_file(errors);
     }
@@ -45,6 +49,7 @@ int main(int argc, char** argv) {
     if (argv[2]){
         write_errors = true;
     }
+
     VectorXd x = gs_mat(entry.A, entry.b, atoi(argv[1]), entry.real_x, tolerance, write_errors);
     out_to_python(x);
 }

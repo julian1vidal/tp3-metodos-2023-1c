@@ -1,6 +1,6 @@
 #include "metodos_iterativos.cpp"
 
-VectorXd LUSOLVER(MatrixXd A, VectorXd b, int iter, VectorXd real_x, double tol, bool write_errors){
+VectorXd LUSOLVER(const MatrixXd& A, const VectorXd& b, int iter, const VectorXd& real_x, double tol, bool write_errors){
     auto start_time = chrono::high_resolution_clock::now();
     VectorXd x = A.lu().solve(b);
     auto end_time = chrono::high_resolution_clock::now();
