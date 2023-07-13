@@ -3,8 +3,24 @@
 VectorXd jacobi_mat(const MatrixXd& A, const VectorXd& b, int iter, const VectorXd& real_x, double tol, bool write_errors){
     auto start_time = chrono::high_resolution_clock::now();
     int cols = b.size();
+
+    // vector random (por defecto)
     VectorXd x = VectorXd::Random(cols);
-    //VectorXd x = VectorXd::Zero(cols);
+
+    // para crear vector cercano
+    // VectorXd x = real_x;
+    // Eigen::VectorXd random_values = Eigen::VectorXd::Random(x.size());
+    // double epsilon = 0.001;
+    // x += epsilon * random_values;
+    // cout << "Norma 2 (x0 - real_x): " << (x0 - real_x).norm() << endl;
+
+    // para crear vector ortog
+    // Eigen::JacobiSVD<Eigen::MatrixXd> svd(real_x.transpose(), Eigen::ComputeFullV);
+    // Eigen::MatrixXd V = svd.matrixV();
+    // Eigen::VectorXd x = V.col(V.cols() - 1);
+    // cout << "Producto escalar: " << x.dot(real_x) << endl;
+
+
     int iters_convergencia = iter;
 
     // A = D-L-U

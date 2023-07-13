@@ -2,10 +2,11 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <vector>
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using namespace std;
-#define tolerance 1e-14
+#define tolerance 1e-8
 
 // =============================================================
 //                     Funciones auxiliares
