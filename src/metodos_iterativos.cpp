@@ -6,7 +6,7 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using namespace std;
-#define tolerance 1e-8
+#define tolerance 1e-14
 
 // =============================================================
 //                     Funciones auxiliares
